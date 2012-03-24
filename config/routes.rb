@@ -1,8 +1,21 @@
 BelugaPod::Application.routes.draw do
 
+  get "hitl_task/consent"
+
+  get "hitl_task/feedback"
+
+  get "hitl_task/thanks"
+
+  get "hitl_task/instructions"
+
+  get "hitl_task/tutorial"
+
+  get "hitl_task/task"
+  
   match '/' => 'pages#home'
   match '/joystick' => 'pages#joystick'
   match '/waypoint' => 'pages#waypoint'
+  match '/hitl' => 'pages#hitl'
   match '/ipc' => 'pages#ipc'
 
   resources :kinematics, :only => [:index, :new, :create, :show]

@@ -1,0 +1,22 @@
+<%= content_for :page_css do %>
+  <%= stylesheet_link_tag "default" %>
+<% end %>
+
+<body>
+
+  <h2>Thanks!</h2>
+		
+  <div class="colored">
+    <p>You are now finished with the experiment. Thank you again for your
+    participation.</p>
+
+    <p>Your authorization code was <%= auth_code %>.</p>
+
+    <p>We are examining how humans make decisions in the context of human-robot
+    teams. The tasks that you just completed will help us to understand the balance
+    between "exploitation" (taking advantage of known rewards) and "exploration"
+    (going in search of potentially larger rewards). Our ultimate goal is to
+    create a model for human decision making in the "explore-vs-exploit" setting.</p>
+  </div>
+
+</body>

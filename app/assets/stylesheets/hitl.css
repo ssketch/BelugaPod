@@ -1,0 +1,49 @@
+div#container {
+  width: 700px; }
+
+div#header {
+  text-align: center; }
+
+div#tankContainer {
+  width: 650px;
+  margin-top: 50px; }
+
+div#tank {
+  width: 650px;
+  height: 650px;
+  background-image: url("gridTank_border.png");
+  background-size: 100% 100%; }
+
+div#crosshair {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  background-image: url("+.png");
+  background-size: 100% 100%; }
+
+div#waypoint {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  background-image: url("red_dot.png");
+  background-size: 100% 100%;
+  opacity: 0.6; }
+
+div#Beluga {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  background-image: url("yellow_dot.png");
+  background-size: 100% 100%;
+  opacity: 0.6; }
+
+.center {
+  margin-left: auto;
+  margin-right: auto; }
+
+.unselectable {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none; }

@@ -1,0 +1,29 @@
+<%= content_for :page_css do %>
+  <%= stylesheet_link_tag "hitl_task" %>
+<% end %>
+
+<%= content_for :page_js do %>
+  <%= javascript_include_tag "hitl_task" %>
+<% end %>
+
+<div id="container" class="center">
+
+  <div id="header">
+    <h2>Robot Control Panel</h2>
+    <font color="#FFFF00">Yellow</font>: Position, <font color="#FF0000">Red</font>: Waypoint
+    <br />
+    <br />
+    <form name="rewardForm" method="post">
+      You just earned ___ points
+    </form>
+  </div>
+
+  <div id="tankContainer" class="center">
+    <div id="tank">
+      <div id="crosshair" class="unselectable"></div>
+      <div id="waypoint" class="unselectable"></div>
+      <div id="Beluga" class="unselectable"></div>
+    </div>
+  </div>
+
+</div>

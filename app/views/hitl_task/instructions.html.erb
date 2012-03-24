@@ -1,0 +1,50 @@
+<%= content_for :page_css do %>
+  <%= stylesheet_link_tag "default" %>
+<% end %>
+
+<body>
+
+  <h2> Welcome to the Human-In-the-Loop task.</h2>
+  
+  <h3> Please read the instructions below.</h3>
+
+  <div class="colored">
+    <p> In this experiment, you will be maneuvering a robot to collect points.
+    The experiment will be composed of 4 tasks of 5-10 minutes each. Each task
+    is divided into 90 moves of the robot. For each move, you will select a
+    square in the 10x10 grid overlaid on the robot's environment. This "waypoint"
+    will be represented by a RED dot. The robot - represented by a YELLOW dot -
+    will then move to this location and a number of points will be displayed.
+    Once the robot reaches its destination, it will stay there until you choose
+    a new destination. <b>Your goal in each task is to collect the maximum total
+    number of reward points over the course of the task.</b></p>
+
+    <p>Depending on the task, the robot may travel at different speeds. This will
+    make some tasks feel faster than others. During a given task, however, the robot's
+    behavior will stay the same for each of the 90 moves. You will not be able
+    to select a new waypoint until the robot reaches its current destination.</p>
+
+    <p>In addition, one task will present you with an "uncertainty chart" to help
+    you with your search. The chart will be a 10x10 grid of colors. The brighter
+    the color in the square, the less you know about that location in the grid. It
+    will update as you conduct your search.</p>
+ 
+    <p>When you are ready, click "Start Training" to bring up a new page with
+    a practice session. This is for you to familiarize yourself with how the
+    tasks work. Afterwards, a button will appear directing you to the first task.
+    There will be 4 tasks in all; once each task is complete, a new button will
+    appear.</p>
+  </div>
+
+  <form method="post">
+    <input type="hidden" name="state" value="training" />
+    <input type='hidden' name='auth_code' value='<%= auth_code %>' />
+    <input type="hidden" name="subject" value="<%= subject %>" />
+    <input type='hidden' name='block' value='<%= block %>' />
+    <input type="hidden" name="timingOrder" value='<%= timingOrder %>' />
+    <input type="hidden" name="surfaceOrder" value='<%= surfaceOrder %>' />
+    <input type="hidden" name="dynamicsOrder" value='<%= dynamicsOrder %>' />
+    <input type="submit" name="ready" value="Start Training" />
+  </form>
+
+</body>
