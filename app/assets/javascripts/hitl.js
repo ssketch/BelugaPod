@@ -200,10 +200,7 @@ function doUpdate()  // check task status, set waypoint, display reward, store d
     goalXpos = currentXpos;    // set position of new waypoint (relative to upper-left corner of grid)
     goalYpos = currentYpos;
     
-    if ((Math.abs(priorgoalXbox - goalXbox) + Math.abs(priorgoalYbox - goalYbox)) > 0)
-    {
-        setWaypoint(goalXpos, goalYpos);
-    }
+    setWaypoint(goalXpos, goalYpos);
     
     /*calculateReward(goalXbox,goalYbox)
     //only display once robot gets to waypoint - how can I access robot's current state?
