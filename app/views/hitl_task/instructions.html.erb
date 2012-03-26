@@ -4,9 +4,9 @@
 
 <body>
 
-  <h2> Welcome to the Human-In-the-Loop task.</h2>
-  
-  <h3> Please read the instructions below.</h3>
+  <div class="white">
+    <h2> Please read the instructions below.</h2>
+  </div>
 
   <div class="colored">
     <p> In this experiment, you will be maneuvering a robot to collect points.
@@ -34,17 +34,18 @@
     tasks work. Afterwards, a button will appear directing you to the first task.
     There will be 4 tasks in all; once each task is complete, a new button will
     appear.</p>
+
+    <%= form_tag("/hitl_task/tutorial", :method => "post") do %>
+      <input type="hidden" name="state" value="training" />
+      <input type="hidden" name="auth_code" value='<%= @auth_code %>' />
+      <input type="hidden" name="subject" value='<%= @subject %>' />
+      <input type="hidden" name="block" value='<%= @block %>' />
+      <input type="hidden" name="timingOrder" value='<%= @timingOrder %>' />
+      <input type="hidden" name="surfaceOrder" value='<%= @surfaceOrder %>' />
+      <input type="submit" name="ready" value="Start Training" />
+    <% end %>
   </div>
 
-  <form method="post">
-    <input type="hidden" name="state" value="training" />
-    <input type='hidden' name='auth_code' value='<%= auth_code %>' />
-    <input type="hidden" name="subject" value="<%= subject %>" />
-    <input type='hidden' name='block' value='<%= block %>' />
-    <input type="hidden" name="timingOrder" value='<%= timingOrder %>' />
-    <input type="hidden" name="surfaceOrder" value='<%= surfaceOrder %>' />
-    <input type="hidden" name="dynamicsOrder" value='<%= dynamicsOrder %>' />
-    <input type="submit" name="ready" value="Start Training" />
-  </form>
+  <!--how to pass variables for use in jQuery:<div class="hidden" id="the_answer">42</div>-->
 
 </body>

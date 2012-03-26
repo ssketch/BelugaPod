@@ -2,17 +2,24 @@ BelugaPod::Application.routes.draw do
 
   get "hitl_task/consent"
 
-  get "hitl_task/feedback"
+  post "hitl_task/instructions"
 
-  get "hitl_task/thanks"
-
-  get "hitl_task/instructions"
-
-  get "hitl_task/tutorial"
+  post "hitl_task/tutorial"
 
   get "hitl_task/task"
   
-  match '/' => 'pages#home'
+  get "hitl_task/feedback"
+
+  get "hitl_task/thanks"
+  
+  match '/' => 'hitl_task#consent'
+  match '/instructions' => 'hitl_task#instructions'
+  match '/tutorial' => 'hitl_task#tutorial'
+  match '/task' => 'hitl_task#task'
+  match '/feedback' => 'hitl_task#feedback'
+  match '/thanks' => 'hitl_task#thanks'
+  
+  # match '/' => 'pages#home'
   match '/joystick' => 'pages#joystick'
   match '/waypoint' => 'pages#waypoint'
   match '/hitl' => 'pages#hitl'

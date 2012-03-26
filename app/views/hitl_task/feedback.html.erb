@@ -4,23 +4,25 @@
 
 <body>
 
-  <h2>Feedback</h2>
+  <div class="white">
+    <h2>Feedback</h2>
+  </div>
 		
   <div class="colored">
     <p>Thank you for participating in this experiment.</p>
-    <p> What were you thinking about while you were performing the tasks? We
+    <p>What were you thinking about while you were performing the tasks? We
     are interested in your answer! Please give us some brief feedback in the
     space below.</p>
 
-    <form method="post">
+    <%= form_tag("/hitl_task/thanks", :method => "post") do %>
       <p>
         <textarea name="feedback" rows="5" cols="80" maxlength="5000"></textarea>
-        <input type="hidden"   name="state" value="feedback" />
-        <input type='hidden'   name='auth_code' value='<%= auth_code %>' />
-        <input type="hidden"   name="subject" value="<%= subject %>" />
-        <input type="submit"   name="ready" value="Submit feedback" />
+        <input type="hidden" name="state" value="feedback" />
+        <input type="hidden" name="auth_code" value='<%= auth_code %>' />
+        <input type="hidden" name="subject" value='<%= subject %>' />
+        <input type="submit" name="done" value="Submit Feedback" />
       </p>
-    </form>
+    <% end %>
   </div>
 
 </body>

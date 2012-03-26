@@ -17,14 +17,14 @@ div#tank {
 div#crosshair {
   width: 20px;
   height: 20px;
-  position: absolute
+  position: absolute;
   background-image: url("+.png");
   background-size: 100% 100%; }
 
 div#waypoint {
   width: 30px;
   height: 30px;
-  position: absolute
+  position: absolute;
   background-image: url("red_dot.png");
   background-size: 100% 100%;
   opacity: 0.6; }
@@ -32,7 +32,7 @@ div#waypoint {
 div#Beluga {
   width: 30px;
   height: 30px;
-  position: absolute
+  position: absolute;
   background-image: url("yellow_dot.png");
   background-size: 100% 100%;
   opacity: 0.6; }

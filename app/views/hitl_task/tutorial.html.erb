@@ -1,4 +1,4 @@
-// FOR NOW, THIS IS JUST A COPY OF task.html.erb //
+<!--FOR NOW, THIS IS JUST A COPY OF the TASK VIEW (task.html.erb)-->
 
 <%= content_for :page_css do %>
   <%= stylesheet_link_tag "hitl_task" %>
@@ -10,13 +10,19 @@
 
 <div id="container" class="center">
 
+  <%= render :partial => 'ipc_status' %> <!--throws error if IPC is not running-->
+
+  <%= form_for @waypoint, :remote => true do |f| %>
+    <%= f.text_field :id %> <!--robot id = 0 (no need to do so explicitly because 0 is default)-->
+  <% end %>
+
   <div id="header">
     <h2>Robot Control Panel</h2>
     <font color="#FFFF00">Yellow</font>: Position, <font color="#FF0000">Red</font>: Waypoint
     <br />
     <br />
     <form name="rewardForm" method="post">
-      You just earned ___ points
+      You just earned <%= @reward %=> points
     </form>
   </div>
 
@@ -27,5 +33,15 @@
       <div id="Beluga" class="unselectable"></div>
     </div>
   </div>
+
+  <%= form_tag("/hitl_task/task", :method => "post") do %>
+    <input type="hidden" name="state" value="training" />
+    <input type="hidden" name="auth_code" value='<%= @auth_code %>' />
+    <input type="hidden" name="subject" value='<%= @subject %>' />
+    <input type="hidden" name="block" value='<%= @block %>' />
+    <input type="hidden" name="timingOrder" value='<%= @timingOrder %>' />
+    <input type="hidden" name="surfaceOrder" value='<%= @surfaceOrder %>' />
+    <input type="hidden" name="ready" value="Start Task" /> <!--want this to appear after done-->
+  <% end %>
 
 </div>
