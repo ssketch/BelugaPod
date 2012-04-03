@@ -1,26 +1,34 @@
 <%= content_for :page_css do %>
-  <%= stylesheet_link_tag "hitl_task" %>
+  <%= stylesheet_link_tag "hitl" %>
+  <%= stylesheet_link_tag "zebra_dialog" %>
 <% end %>
 
 <%= content_for :page_js do %>
-  <%= javascript_include_tag "hitl_task" %>
+  <%= javascript_include_tag "hitl" %>  <!--change back to "hitl_task" after testing-->
+  <%= javascript_include_tag "zebra_dialog" %>
+<% end %>
+
+<title>Task</title>
+
+<%= render :partial => 'ipc_status' %>  <!--throws error if IPC is not running-->
+
+<%= form_for(@waypoint, :remote => true) do |f| %>
+  <%= f.hidden_field :id %>
+  <%= f.hidden_field :x %>
+  <%= f.hidden_field :y %>
+  <%= f.hidden_field :z %>
 <% end %>
 
 <div id="container" class="center">
-
-  <%= render :partial => 'ipc_status' %> <!--throws error if IPC is not running-->
-
-  <%= form_for @waypoint, :remote => true do |f| %>
-    <%= f.text_field :id %> <!--robot id = 0 (no need to do so explicitly because 0 is default)-->
-  <% end %>
 
   <div id="header">
     <h2>Robot Control Panel</h2>
     <font color="#FFFF00">Yellow</font>: Position, <font color="#FF0000">Red</font>: Waypoint
     <br />
     <br />
-    <form name="rewardForm" method="post">
-      You just earned <%= @reward %=> points
+    <br />
+    <form id="reward" method="post">
+      <big><b>REWARD</b> =</big> <input type="text" name="reward" value="" readonly="readonly" />
     </form>
   </div>
 
@@ -32,13 +40,16 @@
     </div>
   </div>
 
-  <%= form_tag("/hitl_task/feedback", :method => "post") do %>
-    <input type="hidden" name="state" value="training" />
-    <input type="hidden" name="auth_code" value='<%= @auth_code %>' />
-    <input type="hidden" name="subject" value='<%= @subject %>' />
-    <input type="hidden" name="block" value='<%= @block %>' />
-    <input type="hidden" name="timingOrder" value='<%= @timingOrder %>' />
-    <input type="hidden" name="surfaceOrder" value='<%= @surfaceOrder %>' />
-  <% end %>
-
 </div>
+
+<%= form_tag("/hitl_task/feedback", :id => "params", :method => "post", :remote => true) do %>
+  <input type="hidden" name="state" value="task" />
+  <input type="hidden" name="subject" value='<%= @subject %>' />
+  <input type="hidden" name="auth_code" value='<%= @auth_code %>' />
+  <input type="hidden" name="timing" />
+  <input type="hidden" name="surface" />
+  <input type="hidden" name="trial" />
+  <input type="hidden" name="currentWaypointX" />
+  <input type="hidden" name="currentWaypointY" />
+  <input type="hidden" name="reward" />
+<% end %>

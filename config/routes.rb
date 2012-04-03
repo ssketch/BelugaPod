@@ -5,12 +5,12 @@ BelugaPod::Application.routes.draw do
   post "hitl_task/instructions"
 
   post "hitl_task/tutorial"
-
-  get "hitl_task/task"
   
-  get "hitl_task/feedback"
+  post "hitl_task/task"
+  
+  post "hitl_task/feedback"
 
-  get "hitl_task/thanks"
+  post "hitl_task/thanks"
   
   match '/' => 'hitl_task#consent'
   match '/instructions' => 'hitl_task#instructions'

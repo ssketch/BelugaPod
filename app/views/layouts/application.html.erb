@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Beluga Pod</title>
   <%= stylesheet_link_tag    "application" %>
   <%= yield :page_css %>
   <%= javascript_include_tag "application" %>
@@ -11,10 +10,6 @@
 <body>
 
 <%= yield %>
-
-<div class="center">
-  <%= link_to "Beluga Pod", "/" %>
-</div>
 
 </body>
 </html>

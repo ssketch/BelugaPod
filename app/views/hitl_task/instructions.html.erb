@@ -2,6 +2,8 @@
   <%= stylesheet_link_tag "default" %>
 <% end %>
 
+<title>Instructions</title>
+
 <body>
 
   <div class="white">
@@ -15,9 +17,10 @@
     square in the 10x10 grid overlaid on the robot's environment. This "waypoint"
     will be represented by a RED dot. The robot - represented by a YELLOW dot -
     will then move to this location and a number of points will be displayed.
-    Once the robot reaches its destination, it will stay there until you choose
-    a new destination. <b>Your goal in each task is to collect the maximum total
-    number of reward points over the course of the task.</b></p>
+    Once the robot reaches its destination and you receive your points, you
+    will be able to select a new waypoint. If you want, this waypoint <b>can be
+    the same</b> as the previous one. <b>Your goal in each task is to collect
+    the maximum total number of points over the course of the task.</b></p>
 
     <p>Depending on the task, the robot may travel at different speeds. This will
     make some tasks feel faster than others. During a given task, however, the robot's
@@ -35,17 +38,12 @@
     There will be 4 tasks in all; once each task is complete, a new button will
     appear.</p>
 
-    <%= form_tag("/hitl_task/tutorial", :method => "post") do %>
-      <input type="hidden" name="state" value="training" />
-      <input type="hidden" name="auth_code" value='<%= @auth_code %>' />
+    <%= form_tag("/hitl_task/tutorial", :id => "params", :method => "post") do %>
+      <input type="hidden" name="state" value="instructions" />
       <input type="hidden" name="subject" value='<%= @subject %>' />
-      <input type="hidden" name="block" value='<%= @block %>' />
-      <input type="hidden" name="timingOrder" value='<%= @timingOrder %>' />
-      <input type="hidden" name="surfaceOrder" value='<%= @surfaceOrder %>' />
+      <input type="hidden" name="auth_code" value='<%= @auth_code %>' />
       <input type="submit" name="ready" value="Start Training" />
     <% end %>
   </div>
-
-  <!--how to pass variables for use in jQuery:<div class="hidden" id="the_answer">42</div>-->
 
 </body>

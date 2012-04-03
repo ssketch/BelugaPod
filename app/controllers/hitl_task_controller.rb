@@ -1,5 +1,11 @@
 class HitlTaskController < ApplicationController
   
+  class Array
+    def shuffle
+	  sort_by { rand }
+    end
+  end
+  
   def consent
     @subject = Time.new().to_i.to_s + "_" + "%04d" % rand(1000)
 	@auth_code = rand(100000000).to_s(base = 16)
@@ -7,26 +13,37 @@ class HitlTaskController < ApplicationController
 
   def instructions
     @subject = params[:subject]
-	
-	@auth_code = nil
-	@block = nil
-	@timingOrder = nil
-	@surfaceOrder = nil
-	@dynamicsOrder = nil
+	@auth_code = params[:auth_code]
   end
 
   def tutorial
-    @waypoint = Waypoint.new(:id => 0, :x => 0, :y => 0, :z => 0)
+    @subject = params[:subject]
+	@auth_code = params[:auth_code]
+	
+	@waypoint = Waypoint.new(:id => 0, :x => 0, :y => 0, :z => 1.65)
   end
 
   def task
-    @waypoint = Waypoint.new(:id => 0, :x => 0, :y => 0, :z => 0)
+	@subject = params[:subject]
+	@auth_code = params[:auth_code]
+	
+	@waypoint = Waypoint.new(:id => 0, :x => 0, :y => 0, :z => 1.65)
   end
 
   def feedback
+    @subject = params[:subject]
+	@auth_code = params[:auth_code]
   end
 
   def thanks
+    @subject = params[:subject]
+    @auth_code = params[:auth_code]
+	@feedback = params[:auth_code]
+	
+	fileName = "#{@subject}.csv"
+    data_file = File.new(fileName, 'a')
+    data_file.puts feedback
+    data_file.close
   end
 
 end

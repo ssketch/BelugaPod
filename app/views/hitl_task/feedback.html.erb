@@ -2,6 +2,8 @@
   <%= stylesheet_link_tag "default" %>
 <% end %>
 
+<title>Feedback</title>
+
 <body>
 
   <div class="white">
@@ -14,12 +16,15 @@
     are interested in your answer! Please give us some brief feedback in the
     space below.</p>
 
-    <%= form_tag("/hitl_task/thanks", :method => "post") do %>
+    <!--ARE THERE OTHER QUESTIONS THAT I WANT TO ASK HERE?-->
+    <!--TALK WITH REBECCA FIEBRINK IN COMPUTER SCIENCE-->
+
+    <%= form_tag("/hitl_task/thanks", :id => "params", :method => "post") do %>
       <p>
         <textarea name="feedback" rows="5" cols="80" maxlength="5000"></textarea>
         <input type="hidden" name="state" value="feedback" />
-        <input type="hidden" name="auth_code" value='<%= auth_code %>' />
         <input type="hidden" name="subject" value='<%= subject %>' />
+        <input type="hidden" name="auth_code" value='<%= auth_code %>' />
         <input type="submit" name="done" value="Submit Feedback" />
       </p>
     <% end %>
