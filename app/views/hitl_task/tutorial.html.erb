@@ -4,7 +4,7 @@
 <% end %>
 
 <%= content_for :page_js do %>
-  <%= javascript_include_tag "hitl" %>  <!--change back to "hitl_task" after testing-->
+  <%= javascript_include_tag "hitl_tutorial" %>
   <%= javascript_include_tag "zebra_dialog" %>
 <% end %>
 
@@ -43,7 +43,6 @@
 </div>
 
 <%= form_tag("/hitl_task/task", :id => "params", :method => "post") do %>
-  <input type="hidden" name="state" value="tutorial" />
   <input type="hidden" name="subject" value='<%= @subject %>' />
   <input type="hidden" name="auth_code" value='<%= @auth_code %>' />
 <% end %>

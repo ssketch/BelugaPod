@@ -24,8 +24,7 @@
 
     <p>Depending on the task, the robot may travel at different speeds. This will
     make some tasks feel faster than others. During a given task, however, the robot's
-    behavior will stay the same for each of the 90 moves. You will not be able
-    to select a new waypoint until the robot reaches its current destination.</p>
+    behavior will stay the same.</p>
 
     <p>In addition, one task will present you with an "uncertainty chart" to help
     you with your search. The chart will be a 10x10 grid of colors. The brighter
@@ -33,13 +32,11 @@
     will update as you conduct your search.</p>
  
     <p>When you are ready, click "Start Training" to bring up a new page with
-    a practice session. This is for you to familiarize yourself with how the
-    tasks work. Afterwards, a button will appear directing you to the first task.
-    There will be 4 tasks in all; once each task is complete, a new button will
-    appear.</p>
+    a short practice session. This is for you to familiarize yourself with how the
+    tasks work. Afterwards, you will be prompted to move on to the experiment.
+    There will be 4 tasks in all; you will be alerted once each is complete.</p>
 
     <%= form_tag("/hitl_task/tutorial", :id => "params", :method => "post") do %>
-      <input type="hidden" name="state" value="instructions" />
       <input type="hidden" name="subject" value='<%= @subject %>' />
       <input type="hidden" name="auth_code" value='<%= @auth_code %>' />
       <input type="submit" name="ready" value="Start Training" />

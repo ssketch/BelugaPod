@@ -40,7 +40,6 @@
       </ul>
 
     <%= form_tag("/hitl_task/instructions", :id => "params", :method => "post") do %>
-      <input type="hidden" name="state" value="consent" />
       <input type="hidden" name="subject" value='<%= @subject %>' />
       <input type="hidden" name="auth_code" value='<%= @auth_code %>' />	
       <input type="submit" name="consent" value="Yes, I consent. Let's begin." />

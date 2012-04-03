@@ -1,7 +1,7 @@
 // VARIABLES
 
-var totalTrials = 5;  // total number of trials
-var trialsCompleted;  // trial counter
+var totalTrials = 90;  // total number of trials
+var trialsCompleted;   // trial counter
 
 var block = 0;
 var timings = [5000, 10000];                    // 5 & 10 seconds (temporarily)
@@ -119,8 +119,6 @@ var goalXpos;       // position of current waypoint (relative to upper-left corn
 var goalYpos;
 var goalXbox;       // current waypoint (box-wise)
 var goalYbox;
-var priorgoalXbox;  // previous waypoint (box-wise)
-var priorgoalYbox;
 var BelugaXpos;     // position of robot in tank-image coordinates (relative to center/origin of tank)
 var BelugaYpos; 
 var BelugaXbox;     // grid box that robot is currently in
@@ -131,7 +129,7 @@ var GridStartY = 143;    // y-coordinate of upper-left pixel of grid
 var GridBoxWidth = 35;   // width (in pixels) of grid box
 var GridBoxHeight = 37;  // height (in pixels) of grid box
 
-var RTank = 3.2;   // tank radius (m)
+var RTank = 3.2;  // tank radius (m)
 
 var HaveCounter;
 var BelugaMoving = false;  // stays true for 'timing' msec after waypoint is set
@@ -199,31 +197,6 @@ function requestPositions()  // via AJAX
     });
 }
 
-function initialize()
-{
-    trialsCompleted = 0;
-    timing = shuffle(timings)[0];                                // repick timing for each block
-    surface = surfaces[block];                                   // surface 1 for 1st block, surface 2 for 2nd block
-    scaler = scalers[Math.floor(Math.random()*scalers.length)];  // repick reward scaler for each block
-    $.Zebra_Dialog('Are you ready to begin a new task?', {
-        keyboard: false,
-        overlay_close: false,
-        overlay_opacity: 0.7
-    });
-    
-    goalXbox = Math.floor(Math.random()*N);     // repick starting box for each block
-    goalYbox = Math.floor(Math.random()*N);
-    goalXpos = GridBoxWidth*(0.5 + goalXbox);   // convert starting box to position (relative to upper-left corner of grid)
-    goalYpos = GridBoxHeight*(0.5 + goalYbox);
-    
-    setWaypoint(goalXpos, goalYpos);
-    
-    calculateReward(surface, goalXbox, goalYbox);
-    setTimeout("displayReward()", timing);         // wait for 'timing' msec (after setting waypoint) to display initial reward
-    
-    // update form fields and send to file (don't post form until ready to proceed to feedback)
-}
-
 function setPosition(id, X, Y, Z)  // updates Beluga position (called elsewhere, so id and Z are kept as arguments)
 {
     BelugaXpos = world2tank(X);
@@ -239,6 +212,31 @@ function setPosition(id, X, Y, Z)  // updates Beluga position (called elsewhere,
         of: "#tank",
         offset: off
     });
+}
+
+function initialize()
+{
+    timing = shuffle(timings)[0];                                // repick timing for each block
+    surface = surfaces[block];                                   // surface 1 for 1st block, surface 2 for 2nd block
+    scaler = scalers[Math.floor(Math.random()*scalers.length)];  // repick reward scaler for each block
+    $.Zebra_Dialog('Are you ready to begin a new task?', {
+        keyboard: false,
+        overlay_close: false,
+        overlay_opacity: 0.7
+    });
+    
+    trialsCompleted = 0;
+    goalXbox = Math.floor(Math.random()*N);     // repick starting box for each block
+    goalYbox = Math.floor(Math.random()*N);
+    goalXpos = GridBoxWidth*(0.5 + goalXbox);   // convert starting box to position (relative to upper-left corner of grid)
+    goalYpos = GridBoxHeight*(0.5 + goalYbox);
+    
+    setWaypoint(goalXpos, goalYpos);
+    
+    calculateReward(surface, goalXbox, goalYbox);
+    setTimeout("displayReward()", timing);         // wait for 'timing' msec (after setting waypoint) to display initial reward
+    
+    storeData();
 }
 
 function snapToGrid(X, Y)  // place a crosshair at center of grid box currently occupied by cursor (i.e., 'snap-to' location)
@@ -270,7 +268,7 @@ function doUpdate()  // check task status, set waypoint, display reward, store d
         }
         else
         {
-            $.Zebra_Dialog('You have now completed all of the tasks. Click "OK" to proceed to the feedback page', {
+            $.Zebra_Dialog('You have now completed all of the tasks. Click "OK" to proceed to the feedback page.', {
                 keyboard: false,
                 overlay_close: false,
                 overlay_opacity: 0.7,
@@ -279,8 +277,6 @@ function doUpdate()  // check task status, set waypoint, display reward, store d
         }
     }
     
-    priorgoalXbox = goalXbox;  // previous waypoint = current waypoint (not updated yet)
-    priorgoalYbox = goalYbox;
     goalXbox = currentXbox;    // new waypoint = grid box that cursor is currently in
     goalYbox = currentYbox;
     goalXpos = currentXpos;    // set position of new waypoint (relative to upper-left corner of grid)
@@ -291,17 +287,9 @@ function doUpdate()  // check task status, set waypoint, display reward, store d
     calculateReward(surface, goalXbox, goalYbox);
     setTimeout("displayReward()", timing);         // wait for 'timing' msec (after setting waypoint) to display reward
     
+    storeData();
+    
     trialsCompleted = ++trialsCompleted;
-    
-    // update form fields and send to file (don't post until ready to proceed to feedback)
-    
-    /*document.params.reward.value = currentReward;
-    document.params.trial.value = trialsCompleted;
-    
-    formData ="state=runningTask&auth_code=<%= auth_code
-    %>&subject=<%= subject %>&block=<%= block %>&timingOrder=<%= timingOrder
-    %>&surfaceOrder=<%= surfaceOrder %>&dynamicsOrder=<%=
-    dynamicsOrder %>&reward=".concat(currentReward.toString(),"&trial=",trialsCompleted.toString(),"&currentX=",currentX.toString(),"&currentY=",currentY.toString(),"&goalX=",goalX.toString(),"&goalY=",goalY.toString(),"&numClicks=",numClicks.toString());*/
 }
 
 function setWaypoint(X, Y)  // position waypoint, both on screen and for Beluga tracking/control
@@ -328,10 +316,10 @@ function setWaypoint(X, Y)  // position waypoint, both on screen and for Beluga 
     BelugaMoving = true;  // waypoint has been sent ('timing' msec before reward is displayed & subject can select a new waypoint)
 }
 
-function calculateReward(surface, Xbox, Ybox)  // randomly chosen scaler x noisy reward = output to subject
+function calculateReward(surface, Xbox, Ybox)  // scaler x noisy reward = output to subject
 {
     var locationReward = reward[surface][Xbox][Ybox];
-    noisyReward = Math.floor(25*locationReward/3.2) + Math.floor(sigma*Math.random());  // add noise
+    noisyReward = Math.floor(25*locationReward/3.2) + Math.floor(Math.random()*sigma);  // add noise
     currentReward = scaler*noisyReward;                                                 // scale
 }
 
@@ -340,6 +328,16 @@ function displayReward()
     $("#reward input[name=reward]").attr('value', currentReward);
     
     BelugaMoving = false;  // subject can select a new waypoint
+}
+
+function storeData()
+{
+    $("#params input[name=timing]").attr('value', timing);
+    $("#params input[name=surface]").attr('value', surface);
+    $("#params input[name=trial]").attr('value', trialsCompleted);
+    $("#params input[name=waypointX]").attr('value', goalXbox);
+    $("#params input[name=waypointY]").attr('value', goalYbox);
+    $("#params input[name=reward]").attr('value', currentReward);
 }
 
 function doSend()

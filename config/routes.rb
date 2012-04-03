@@ -12,14 +12,9 @@ BelugaPod::Application.routes.draw do
 
   post "hitl_task/thanks"
   
-  match '/' => 'hitl_task#consent'
-  match '/instructions' => 'hitl_task#instructions'
-  match '/tutorial' => 'hitl_task#tutorial'
-  match '/task' => 'hitl_task#task'
-  match '/feedback' => 'hitl_task#feedback'
-  match '/thanks' => 'hitl_task#thanks'
+  match '/hitl_task' => 'hitl_task#consent'
   
-  # match '/' => 'pages#home'
+  match '/' => 'pages#home'
   match '/joystick' => 'pages#joystick'
   match '/waypoint' => 'pages#waypoint'
   match '/hitl' => 'pages#hitl'
