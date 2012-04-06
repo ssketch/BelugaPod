@@ -30,6 +30,10 @@ class HitlTaskController < ApplicationController
 	@waypoint = Waypoint.new(:id => 0, :x => 0, :y => 0, :z => 1.65)
   end
 
+  def processData
+    
+  end
+
   def feedback
     @subject = params[:subject]
 	@auth_code = params[:auth_code]
