@@ -125,7 +125,7 @@ function setPosition(id, X, Y, Z)  // updates Beluga position (called elsewhere,
     });
 }
 
-function initialize()
+function initialize()  // send robot to starting box
 {
     $.Zebra_Dialog('Are you ready to begin the training?', {
         keyboard: false,
@@ -172,7 +172,7 @@ function doUpdate()  // check task status, set waypoint, display reward, store d
             overlay_close: false,
             overlay_opacity: 0.7,
             onClose: function(caption) {
-                $("form#params").submit()
+                $("form#done").submit()
             }
         });
     }
@@ -223,7 +223,7 @@ function calculateReward(Xbox, Ybox)  // scaler x noisy reward = output to subje
 
 function displayReward()
 {
-    $("#reward input[name=reward]").attr('value', currentReward);
+    $("input[name=reward]").attr('value', currentReward);
     
     BelugaMoving = false;  // subject can select a new waypoint
 }

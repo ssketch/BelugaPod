@@ -214,7 +214,7 @@ function setPosition(id, X, Y, Z)  // updates Beluga position (called elsewhere,
     });
 }
 
-function initialize()
+function initialize()  // pick timing, set & scale surface, send robot to starting box
 {
     timing = shuffle(timings)[0];                                // repick timing for each block
     surface = surfaces[block];                                   // surface 1 for 1st block, surface 2 for 2nd block
@@ -236,7 +236,7 @@ function initialize()
     calculateReward(surface, goalXbox, goalYbox);
     setTimeout("displayReward()", timing);         // wait for 'timing' msec (after setting waypoint) to display initial reward
     
-    storeData();
+    sendData();
 }
 
 function snapToGrid(X, Y)  // place a crosshair at center of grid box currently occupied by cursor (i.e., 'snap-to' location)
@@ -259,12 +259,16 @@ function snapToGrid(X, Y)  // place a crosshair at center of grid box currently 
 
 function doUpdate()  // check task status, set waypoint, display reward, store data
 {
+    trialsCompleted = ++trialsCompleted;
+    
     if (trialsCompleted == totalTrials)  // done with current iteration of task
     {
         block = ++block;
+        
         if (block < 2)
         {
             initialize();
+            return
         }
         else
         {
@@ -273,9 +277,10 @@ function doUpdate()  // check task status, set waypoint, display reward, store d
                 overlay_close: false,
                 overlay_opacity: 0.7,
                 onClose: function(caption) {
-                    $("form#params").submit()
+                    $("form#done").submit()
                 }
             });
+            return
         }
     }
     
@@ -289,9 +294,7 @@ function doUpdate()  // check task status, set waypoint, display reward, store d
     calculateReward(surface, goalXbox, goalYbox);
     setTimeout("displayReward()", timing);         // wait for 'timing' msec (after setting waypoint) to display reward
     
-    storeData();
-    
-    trialsCompleted = ++trialsCompleted;
+    sendData();
 }
 
 function setWaypoint(X, Y)  // position waypoint, both on screen and for Beluga tracking/control
@@ -327,20 +330,28 @@ function calculateReward(surface, Xbox, Ybox)  // scaler x noisy reward = output
 
 function displayReward()
 {
-    $("#reward input[name=reward]").attr('value', currentReward);
+    $("input[name=reward]").attr('value', currentReward);
     
     BelugaMoving = false;  // subject can select a new waypoint
 }
 
-function storeData()
+function sendData()  // via AJAX
 {
-    $("#params input[name=block]").attr('value', block);
-    $("#params input[name=timing]").attr('value', timing);
-    $("#params input[name=surface]").attr('value', surface);
-    $("#params input[name=trial]").attr('value', trialsCompleted);
-    $("#params input[name=waypointX]").attr('value', goalXbox);
-    $("#params input[name=waypointY]").attr('value', goalYbox);
-    $("#params input[name=reward]").attr('value', currentReward);
+    var data = {};
+    data['subject'] = $("input[name=subject]").val();
+    data['block'] = block;
+    data['timing'] = timing;
+    data['surface'] = surface;
+    data['trial'] = trialsCompleted;
+    data['waypointX'] = goalXbox;
+    data['waypointY'] = goalYbox;
+    data['reward'] = currentReward;
+    
+     $.ajax({
+        type: "POST",
+        url: "processData",
+        data: data
+    });
 }
 
 function doSend()

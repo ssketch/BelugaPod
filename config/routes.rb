@@ -8,6 +8,8 @@ BelugaPod::Application.routes.draw do
   
   post "hitl_task/task"
   
+  post "hitl_task/processData"
+  
   post "hitl_task/feedback"
 
   post "hitl_task/thanks"
@@ -17,7 +19,6 @@ BelugaPod::Application.routes.draw do
   match '/' => 'pages#home'
   match '/joystick' => 'pages#joystick'
   match '/waypoint' => 'pages#waypoint'
-  match '/hitl' => 'pages#hitl'
   match '/ipc' => 'pages#ipc'
 
   resources :kinematics, :only => [:index, :new, :create, :show]

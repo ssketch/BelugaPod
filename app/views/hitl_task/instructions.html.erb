@@ -42,9 +42,8 @@
     tasks work. Afterwards, you will be prompted to move on to the experiment.
     There will be 4 tasks in all; you will be alerted once each is complete.</p>
 
-    <%= form_tag("/hitl_task/tutorial", :id => "params", :method => "post") do %>
+    <%= form_tag("/hitl_task/tutorial", :method => "post") do %>
       <input type="hidden" name="subject" value='<%= @subject %>' />
-      <input type="hidden" name="auth_code" value='<%= @auth_code %>' />
       <input type="submit" name="ready" value="Start Training" />
     <% end %>
   </div>

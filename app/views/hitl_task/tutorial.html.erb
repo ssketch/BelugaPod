@@ -27,7 +27,7 @@
     <br />
     <br />
     <br />
-    <form id="reward" method="post">
+    <form method="post">
       <big><b>REWARD</b> =</big> <input type="text" name="reward" value="" readonly="readonly" />
     </form>
   </div>
@@ -42,7 +42,6 @@
 
 </div>
 
-<%= form_tag("/hitl_task/task", :id => "params", :method => "post") do %>
+<%= form_tag("/hitl_task/task", :id => "done", :method => "post") do %>
   <input type="hidden" name="subject" value='<%= @subject %>' />
-  <input type="hidden" name="auth_code" value='<%= @auth_code %>' />
 <% end %>
