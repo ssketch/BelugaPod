@@ -1,11 +1,11 @@
 // VARIABLES
 
-var totalTrials = 10;  // total number of training trials
+var totalTrials = 5;   // total number of training trials
 var trialsCompleted;   // trial counter
 
 var timing = 7500;                  // 7.5 sec per training trial
 var N = 10;                         // grid size
-var reward = new Array(N);          // training surface (just noise
+var reward = new Array(N);          // training surface (just noise)
 reward[0] = [1,1,1,1,1,1,1,1,1,1];
 reward[1] = [1,1,1,1,1,1,1,1,1,1];
 reward[2] = [1,1,1,1,1,1,1,1,1,1];
@@ -17,7 +17,6 @@ reward[7] = [1,1,1,1,1,1,1,1,1,1];
 reward[8] = [1,1,1,1,1,1,1,1,1,1];
 reward[9] = [1,1,1,1,1,1,1,1,1,1];
 var sigma = 10;                     // noise intensity for reward
-var scaler = 100;;                  // scaler x noisy reward = output to subject
 var currentReward;
 
 var mouseXonGrid;   // current cursor location (relative to upper-left corner of grid)
@@ -165,6 +164,8 @@ function snapToGrid(X, Y)  // place a crosshair at center of grid box currently 
 
 function doUpdate()  // check task status, set waypoint, display reward, store data
 {
+    trialsCompleted = ++trialsCompleted;
+    
     if (trialsCompleted == totalTrials)  // done with current iteration of task
     {
         $.Zebra_Dialog('You have now completed the training. Click "OK" to proceed to the experiment.', {
@@ -186,8 +187,6 @@ function doUpdate()  // check task status, set waypoint, display reward, store d
     
     calculateReward(goalXbox, goalYbox);
     setTimeout("displayReward()", timing);         // wait for 'timing' msec (after setting waypoint) to display reward
-        
-    trialsCompleted = ++trialsCompleted;
 }
 
 function setWaypoint(X, Y)  // position waypoint, both on screen and for Beluga tracking/control
@@ -214,11 +213,10 @@ function setWaypoint(X, Y)  // position waypoint, both on screen and for Beluga 
     BelugaMoving = true;  // waypoint has been sent ('timing' msec before reward is displayed & subject can select a new waypoint)
 }
 
-function calculateReward(Xbox, Ybox)  // scaler x noisy reward = output to subject
+function calculateReward(Xbox, Ybox)
 {
     var locationReward = reward[Xbox][Ybox];
-    noisyReward = Math.floor(25*locationReward/3.2) + Math.floor(Math.random()*sigma);  // add noise
-    currentReward = scaler*noisyReward;                                                 // scale
+    currentReward = Math.floor(25*locationReward/3.2) + Math.floor(Math.random()*sigma);  // add noise
 }
 
 function displayReward()

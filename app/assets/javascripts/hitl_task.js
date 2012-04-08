@@ -4,14 +4,14 @@ var totalTrials = 90;  // total number of trials
 var trialsCompleted;   // trial counter
 
 var block = 0;
-var timings = [5000, 10000];                    // 5 & 10 seconds (temporarily)
-var timing;                                     // selected time per trial (i.e., for robot to travel between waypoints) for current block
-var surfaceCG = shuffle([0,1,2,3])[0];          // CG rotated 0, 90, 180, 270 degrees, randomized
-var surfaceRO = shuffle([4,5,6,7])[0];          // RO rotated 0, 90, 180, 270 degrees, randomized
-var surfaces = shuffle([surfaceCG,surfaceRO]);  // 1 CG and 1 RO surface, randomized
-var surface;                                    // selected surface for current block
-var N = 10;                                     // grid size
-var reward = new Array(8);                      // 8 different reward surfaces (NxN each)
+var timings = [5000, 10000];                            // 5 & 10 seconds (temporarily)
+var timing;                                             // selected time per trial (i.e., for robot to travel between waypoints) for current block
+var surfacesCG = shuffle([0,1,2,3]);                    // CG rotated 0, 90, 180, 270 degrees, randomized
+var surfacesRO = shuffle([4,5,6,7]);                    // RO rotated 0, 90, 180, 270 degrees, randomized
+var surfaces = shuffle([surfacesCG[0],surfacesRO[0]]);  // 1 CG and 1 RO surface, randomized
+var surface;                                            // selected surface for current block
+var N = 10;                                             // grid size
+var reward = new Array(8);                              // 8 different reward surfaces (NxN each)
 for (var i = 0; i < reward.length; i++)
 {
 	reward[i] = new Array(N);
@@ -104,7 +104,8 @@ reward[7][6] = [4,4,4,4,4,4,4,4,4,4];
 reward[7][7] = [5,5,5,5,5,5,5,5,5,5];
 reward[7][8] = [6,6,6,6,6,6,6,6,6,6];
 reward[7][9] = [7,7,7,7,7,7,7,7,7,7];
-var sigma = 10;                        // noise intensity for reward
+var sigmas = [10,10,0];                // noise intensity for reward (3rd block = noiseless)
+var sigma;
 var scalers = [1,10,100,1000];
 var scaler;                            // scaler x noisy reward = output to subject
 var currentReward;
@@ -214,11 +215,21 @@ function setPosition(id, X, Y, Z)  // updates Beluga position (called elsewhere,
     });
 }
 
-function initialize()  // pick timing, set & scale surface, send robot to starting box
+function initialize()  // set timing, surface, noise, & scaler, send robot to starting box
 {
-    timing = shuffle(timings)[0];                                // repick timing for each block
-    surface = surfaces[block];                                   // surface 1 for 1st block, surface 2 for 2nd block
+    if (block < 2)  // 1st & 2nd blocks (1 CG & 1 RO, timing picked randomly for each, noisy)
+    {
+        timing = shuffle(timings)[0];  // random, repick for each block
+        surface = surfaces[block];     // surface 1 for 1st block, surface 2 for 2nd block
+    }
+    else  // 3rd block (fast, RO, noiseless)
+    {
+        timing = timings[0];      // fast timing
+        surface = surfacesRO[1];  // next RO surface in array
+    }
+    sigma = sigmas[block];                                       // 10 for 1st & 2nd block, 0 (noiseless) for 3rd
     scaler = scalers[Math.floor(Math.random()*scalers.length)];  // repick reward scaler for each block
+    
     $.Zebra_Dialog('Are you ready to begin a new task?', {
         keyboard: false,
         overlay_close: false,
@@ -265,7 +276,7 @@ function doUpdate()  // check task status, set waypoint, display reward, store d
     {
         block = ++block;
         
-        if (block < 2)
+        if (block < 3)
         {
             initialize();
             return
