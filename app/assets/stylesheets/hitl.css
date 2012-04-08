@@ -1,12 +1,8 @@
-div#container {
-  width: 700px; }
-
 div#header {
   text-align: center; }
 
 div#tankContainer {
-  width: 650px;
-  margin-top: 50px; }
+  width: 650px; }
 
 div#tank {
   width: 650px;
@@ -37,6 +33,16 @@ div#Beluga {
   background-size: 100% 100%;
   opacity: 0.6; }
 
+div#chartContainer {
+  width: 400px; }
+
+div#chart {
+  width: 400px;
+  height: 400px; }
+
+td {
+  vertical-align: middle; }
+
 input[type=text] {
   width: 100px;
   text-align: center;
@@ -47,9 +53,6 @@ input[type=text] {
 .center {
   margin-left: auto;
   margin-right: auto; }
-
-.hidden {
-  display: none; }
 
 .unselectable {
   -webkit-user-select: none;

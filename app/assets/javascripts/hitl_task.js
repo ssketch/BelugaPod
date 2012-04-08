@@ -283,7 +283,7 @@ function doUpdate()  // check task status, set waypoint, display reward, store d
         }
         else
         {
-            $.Zebra_Dialog('You have now completed all of the tasks. Click "OK" to proceed to the feedback page.', {
+            $.Zebra_Dialog('You will given an "certainty chart" to help with your final task. The chart will be a 10x10 grid of colored dots. The larger the dot and "warmer" the color, the more you know about that location in the grid. Click "OK" to proceed.', {
                 keyboard: false,
                 overlay_close: false,
                 overlay_opacity: 0.7,

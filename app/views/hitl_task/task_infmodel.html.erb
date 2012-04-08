@@ -4,8 +4,11 @@
 <% end %>
 
 <%= content_for :page_js do %>
-  <%= javascript_include_tag "hitl_task" %>
+  <%= javascript_include_tag "hitl_task_infmodel" %>
   <%= javascript_include_tag "zebra_dialog" %>
+  <%= javascript_include_tag "raphael" %>
+  <%= javascript_include_tag "g.raphael" %>
+  <%= javascript_include_tag "g.dot" %>
 <% end %>
 
 <title>Task</title>
@@ -19,7 +22,7 @@
   <%= f.hidden_field :z %>
 <% end %>
 
-<%= form_tag("/hitl_task/task_infmodel", :id => "done", :method => "post") do %>
+<%= form_tag("/hitl_task/feedback", :id => "done", :method => "post") do %>
   <input type="hidden" name="subject" value='<%= @subject %>' />
 <% end %>
 
@@ -39,12 +42,24 @@
     <br />
   </div>
 
-  <div id="tankContainer" class="center">
-    <div id="tank">
-      <div id="crosshair" class="unselectable"></div>
-      <div id="waypoint" class="unselectable"></div>
-      <div id="Beluga" class="unselectable"></div>
-    </div>
-  </div>
+  <table class="center" cellspacing="50">
+    <tr>
+      <td class="center">
+        <div id="tankContainer">
+          <div id="tank">
+            <div id="crosshair" class="unselectable"></div>
+            <div id="waypoint" class="unselectable"></div>
+            <div id="Beluga" class="unselectable"></div>
+          </div>
+        </div>
+      </td>
+
+      <td class="center">
+        <div id="chartContainer">
+          <div id="chart"></div>
+        </div>
+      </td>
+    </tr>
+  </table>
 
 </body>

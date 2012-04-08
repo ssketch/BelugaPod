@@ -17,6 +17,11 @@ class HitlTaskController < ApplicationController
 	@subject = params[:subject]
 	@waypoint = Waypoint.new(:id => 0, :x => 0, :y => 0, :z => 1.8)
   end
+  
+  def task_infmodel
+	@subject = params[:subject]
+	@waypoint = Waypoint.new(:id => 0, :x => 0, :y => 0, :z => 1.8)
+  end
 
   def processData
 	@subject = params[:subject]

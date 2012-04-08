@@ -19,7 +19,11 @@
   <%= f.hidden_field :z %>
 <% end %>
 
-<div id="container" class="center">
+<%= form_tag("/hitl_task/task", :id => "done", :method => "post") do %>
+  <input type="hidden" name="subject" value='<%= @subject %>' />
+<% end %>
+
+<body>
 
   <div id="header">
     <h2>Robot Control Panel</h2>
@@ -30,6 +34,9 @@
     <form method="post">
       <big><b>REWARD</b> =</big> <input type="text" name="reward" value="" readonly="readonly" />
     </form>
+    <br />
+    <br />
+    <br />
   </div>
 
   <div id="tankContainer" class="center">
@@ -40,8 +47,4 @@
     </div>
   </div>
 
-</div>
-
-<%= form_tag("/hitl_task/task", :id => "done", :method => "post") do %>
-  <input type="hidden" name="subject" value='<%= @subject %>' />
-<% end %>
+</body>
