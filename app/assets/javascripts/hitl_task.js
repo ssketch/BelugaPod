@@ -142,7 +142,7 @@ var SendPeriod = 500;      // time between updates (msec)
 
 $(document).ready(function(){
 
-    $('#crosshair').hide(); // hide crosshair and waypoint to start
+    $('#crosshair').hide();  // hide crosshair and waypoint to start
     $('#waypoint').hide();
     
     requestWaypoints();
@@ -283,7 +283,8 @@ function doUpdate()  // check task status, set waypoint, display reward, store d
         }
         else
         {
-            $.Zebra_Dialog('You will given an "certainty chart" to help with your final task. The chart will be a 10x10 grid of colored dots. The larger the dot and "warmer" the color, the more you know about that location in the grid. Click "OK" to proceed.', {
+            $("input[name=nextSurface]").attr('value', surfacesRO[2]);  // store next RO surface for task with inference model
+            $.Zebra_Dialog('The next task is your final task. As described in the instructions, you will be given a continuously updating "reward map" to help with your search. The map will be a 10x10 grid of colored dots. The larger the dot and "warmer" the color, the greater you believe the reward at that location in the grid to be. Click "OK" to proceed.', {
                 keyboard: false,
                 overlay_close: false,
                 overlay_opacity: 0.7,
@@ -295,9 +296,9 @@ function doUpdate()  // check task status, set waypoint, display reward, store d
         }
     }
     
-    goalXbox = currentXbox;    // new waypoint = grid box that cursor is currently in
+    goalXbox = currentXbox;  // new waypoint = grid box that cursor is currently in
     goalYbox = currentYbox;
-    goalXpos = currentXpos;    // set position of new waypoint (relative to upper-left corner of grid)
+    goalXpos = currentXpos;  // set position of new waypoint (relative to upper-left corner of grid)
     goalYpos = currentYpos;
     
     setWaypoint(goalXpos, goalYpos);

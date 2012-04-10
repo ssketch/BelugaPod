@@ -1,37 +1,100 @@
 // VARIABLES
 
-var totalTrials = 90;  // total number of training trials
+var totalTrials = 90;  // total number of trials
 var trialsCompleted;   // trial counter
 
-var timing = 5000;                  // fast timing
-var N = 10;                         // grid size
-var reward = new Array(N);          // training surface (just noise)
-reward[0] = [1,1,1,1,1,1,1,1,1,1];
-reward[1] = [1,1,1,1,1,1,1,1,1,1];
-reward[2] = [1,1,1,1,1,1,1,1,1,1];
-reward[3] = [1,1,1,1,1,1,1,1,1,1];
-reward[4] = [1,1,1,1,1,1,1,1,1,1];
-reward[5] = [1,1,1,1,1,1,1,1,1,1];
-reward[6] = [1,1,1,1,1,1,1,1,1,1];
-reward[7] = [1,1,1,1,1,1,1,1,1,1];
-reward[8] = [1,1,1,1,1,1,1,1,1,1];
-reward[9] = [1,1,1,1,1,1,1,1,1,1];
-var sigma = 10;                     // noise intensity for reward
+var block = 3;                           // 4th and final block
+var timing = 5000;                       // fast timing
+var surface;                             // will be pulled in from HTML
+var d = 2;                               // dimensionality of grid
+var N = 10;                              // grid size
+var reward = new Array(4);               // just RO surfaces
+for (var i = 0; i < reward.length; i++)
+{
+	reward[i] = new Array(N);
+}
+// RO, 0 degrees
+reward[0][0] = [3,2,1,1,1,2,4,5,6,7];
+reward[0][1] = [3,2,1,1,1,2,4,5,6,7];
+reward[0][2] = [3,2,1,1,1,2,4,5,6,7];
+reward[0][3] = [3,2,1,1,1,2,4,5,6,7];
+reward[0][4] = [3,2,1,1,1,2,4,5,6,7];
+reward[0][5] = [3,2,1,1,1,2,4,5,6,7];
+reward[0][6] = [3,2,1,1,1,2,4,5,6,7];
+reward[0][7] = [3,2,1,1,1,2,4,5,6,7];
+reward[0][8] = [3,2,1,1,1,2,4,5,6,7];
+reward[0][9] = [3,2,1,1,1,2,4,5,6,7];
+// RO, 90 degrees
+reward[1][0] = [7,7,7,7,7,7,7,7,7,7];
+reward[1][1] = [6,6,6,6,6,6,6,6,6,6];
+reward[1][2] = [5,5,5,5,5,5,5,5,5,5];
+reward[1][3] = [4,4,4,4,4,4,4,4,4,4];
+reward[1][4] = [2,2,2,2,2,2,2,2,2,2];
+reward[1][5] = [1,1,1,1,1,1,1,1,1,1];
+reward[1][6] = [1,1,1,1,1,1,1,1,1,1];
+reward[1][7] = [1,1,1,1,1,1,1,1,1,1];
+reward[1][8] = [2,2,2,2,2,2,2,2,2,2];
+reward[1][9] = [3,3,3,3,3,3,3,3,3,3];
+// RO, 180 degrees
+reward[2][0] = [7,6,5,4,2,1,1,1,2,3];
+reward[2][1] = [7,6,5,4,2,1,1,1,2,3];
+reward[2][2] = [7,6,5,4,2,1,1,1,2,3];
+reward[2][3] = [7,6,5,4,2,1,1,1,2,3];
+reward[2][4] = [7,6,5,4,2,1,1,1,2,3];
+reward[2][5] = [7,6,5,4,2,1,1,1,2,3];
+reward[2][6] = [7,6,5,4,2,1,1,1,2,3];
+reward[2][7] = [7,6,5,4,2,1,1,1,2,3];
+reward[2][8] = [7,6,5,4,2,1,1,1,2,3];
+reward[2][9] = [7,6,5,4,2,1,1,1,2,3];
+// RO, 270 degrees
+reward[3][0] = [3,3,3,3,3,3,3,3,3,3];
+reward[3][1] = [2,2,2,2,2,2,2,2,2,2];
+reward[3][2] = [1,1,1,1,1,1,1,1,1,1];
+reward[3][3] = [1,1,1,1,1,1,1,1,1,1];
+reward[3][4] = [1,1,1,1,1,1,1,1,1,1];
+reward[3][5] = [2,2,2,2,2,2,2,2,2,2];
+reward[3][6] = [4,4,4,4,4,4,4,4,4,4];
+reward[3][7] = [5,5,5,5,5,5,5,5,5,5];
+reward[3][8] = [6,6,6,6,6,6,6,6,6,6];
+reward[3][9] = [7,7,7,7,7,7,7,7,7,7];
+var sigma = 10;                        // noise intensity for reward
+var scalers = [1,10,100,1000];
+var scaler;                            // scaler x noisy reward = output to subject
 var currentReward;
 
-var mouseXonGrid;   // current cursor location (relative to upper-left corner of grid)
+var meanRew;     // mean-reward vector (mu) in Bayesian inference model
+var cov;         // covariance matrix (SIGMA) in Bayesian inference model
+var lambda = 3;  // spatial length scale for initial (same value used in Paul Reverdy's paper)
+var precision;   // precision matrix (LAMBDA) in Bayesian inference model (inverse covariance)
+var posVector;   // vector representing position of current waypoint in grid (all zeros except for a 1 at waypoint position)
+var posMatrix;   // matrix representing position of current waypoint in grid (all zeros except for a 1 at waypoint position along diagonal) = posVector*posVector'
+
+var rewardMap;                     // Raphael canvas for reward map
+var data;                          // to be represented in dotchart
+var x = new Array(Math.pow(N,d));  // define grid for dotchart
+var y = new Array(Math.pow(N,d));
+for (var i = 0; i < N; i++)
+{
+    for (var j = 0; j < N; j++)
+    {
+        x[i*N + j] = j;            // x = [0,1,2,3,4,5,6,7,8,9,0,1,2,3,4...]
+        y[i*N + j] = N - i;        // y = [10,10,10,10,10,10,10,10,10,10,9,9,9,9,9,9,9,9,9,9...]
+    }
+}
+
+var mouseXonGrid;  // current cursor location (relative to upper-left corner of grid)
 var mouseYonGrid;
-var currentXpos;    // current cursor location (centers of grid boxes, relative to upper-left corner of grid)
+var currentXpos;   // current cursor location (centers of grid boxes, relative to upper-left corner of grid)
 var currentYpos;
-var currentXbox;    // grid box that cursor is currently in
+var currentXbox;   // grid box that cursor is currently in
 var currentYbox; 
-var goalXpos;       // position of current waypoint (relative to upper-left corner of grid)
+var goalXpos;      // position of current waypoint (relative to upper-left corner of grid)
 var goalYpos;
-var goalXbox;       // current waypoint (box-wise)
+var goalXbox;      // current waypoint (box-wise)
 var goalYbox;
-var BelugaXpos;     // position of robot in tank-image coordinates (relative to center/origin of tank)
+var BelugaXpos;    // position of robot in tank-image coordinates (relative to center/origin of tank)
 var BelugaYpos; 
-var BelugaXbox;     // grid box that robot is currently in
+var BelugaXbox;    // grid box that robot is currently in
 var BelugaYbox;
 
 var GridStartX = 153;    // x-coordinate of upper-left pixel of grid
@@ -51,7 +114,7 @@ var SendPeriod = 500;      // time between updates (msec)
 
 $(document).ready(function(){
 
-    $('#crosshair').hide(); // hide crosshair and waypoint to start
+    $('#crosshair').hide();  // hide crosshair and waypoint to start
     $('#waypoint').hide();
     
     requestWaypoints();
@@ -126,7 +189,25 @@ function setPosition(id, X, Y, Z)  // updates Beluga position (called elsewhere,
 
 function initialize()  // send robot to starting box
 {
-    $.Zebra_Dialog('Are you ready to begin the training?', {
+    surface = parseInt($("input[name=surface]").val()) - 4;      // next RO in sequence from hitl_task.js (subtract 4 because RO surfaces are indexed 0-3 here) 
+    scaler = scalers[Math.floor(Math.random()*scalers.length)];  // random reward scaler
+    
+    meanRew = Vector.Zero(Math.pow(N,d));                                                                         // initial mean-reward distribution = 0
+    cov = Matrix.Zero(Math.pow(N,d), Math.pow(N,d));
+    for (var i = 0; i < Math.pow(N,d); i++)                                                                       // inital covariance matrix = exponential with spatial length scale
+    {
+        for (var j = 0; j < Math.pow(N,d); j++)
+        {
+            cov.elements[i][j] = Math.exp(-(cov.row(i+1).distanceFrom(cov.col(j+1)))/lambda);                     // cov(i,j) = exp(-|x_i - x_j|/lambda)
+        }                                                                                                         // NOTE: vectors & matrices index from 1, not 0
+    }
+    precision = cov.inv();
+    posVector = Vector.Zero(Math.pow(N,d));                                                                       // no waypoint has been selected yet
+    posMatrix = posVector.toDiagonalMatrix();
+    rewardMap = Raphael($("#RM").position().left, $("#RM").position().top, $("#RM").width(), $("#RM").height());  // set up Raphael canvas
+    displayRM();
+    
+    $.Zebra_Dialog('Are you ready to begin the final task?', {
         keyboard: false,
         overlay_close: false,
         overlay_opacity: 0.7
@@ -140,8 +221,11 @@ function initialize()  // send robot to starting box
     
     setWaypoint(goalXpos, goalYpos);
     
-    calculateReward(goalXbox, goalYbox);
-    setTimeout("displayReward()", timing);         // wait for 'timing' msec (after setting waypoint) to display initial reward
+    calculateReward(surface, goalXbox, goalYbox);
+    setTimeout("displayReward()", timing);         // wait for 'timing' msec (after setting waypoint) to display initial reward and update reward map
+    setTimeout("updateRM()", timing);
+    
+    sendData();
 }
 
 function snapToGrid(X, Y)  // place a crosshair at center of grid box currently occupied by cursor (i.e., 'snap-to' location)
@@ -168,7 +252,7 @@ function doUpdate()  // check task status, set waypoint, display reward, store d
     
     if (trialsCompleted == totalTrials)  // done with current iteration of task
     {
-        $.Zebra_Dialog('You have now completed the training. Click "OK" to proceed to the experiment.', {
+        $.Zebra_Dialog('You have now completed all of the tasks. Click "OK" to proceed to the feedback section.', {
             keyboard: false,
             overlay_close: false,
             overlay_opacity: 0.7,
@@ -176,17 +260,21 @@ function doUpdate()  // check task status, set waypoint, display reward, store d
                 $("form#done").submit()
             }
         });
+        return
     }
     
-    goalXbox = currentXbox;    // new waypoint = grid box that cursor is currently in
+    goalXbox = currentXbox;  // new waypoint = grid box that cursor is currently in
     goalYbox = currentYbox;
-    goalXpos = currentXpos;    // set position of new waypoint (relative to upper-left corner of grid)
+    goalXpos = currentXpos;  // set position of new waypoint (relative to upper-left corner of grid)
     goalYpos = currentYpos;
     
     setWaypoint(goalXpos, goalYpos);
     
-    calculateReward(goalXbox, goalYbox);
-    setTimeout("displayReward()", timing);         // wait for 'timing' msec (after setting waypoint) to display reward
+    calculateReward(surface, goalXbox, goalYbox);
+    setTimeout("displayReward()", timing);         // wait for 'timing' msec (after setting waypoint) to display initial reward and update reward map
+    setTimeout("updateRM()", timing);
+    
+    sendData();
 }
 
 function setWaypoint(X, Y)  // position waypoint, both on screen and for Beluga tracking/control
@@ -213,17 +301,61 @@ function setWaypoint(X, Y)  // position waypoint, both on screen and for Beluga 
     BelugaMoving = true;  // waypoint has been sent ('timing' msec before reward is displayed & subject can select a new waypoint)
 }
 
-function calculateReward(Xbox, Ybox)
+function calculateReward(surface, Xbox, Ybox)  // scaler x noisy reward = output to subject
 {
-    var locationReward = reward[Xbox][Ybox];
-    currentReward = Math.floor(25*locationReward/3.2) + Math.floor(Math.random()*sigma);  // add noise
+    var locationReward = reward[surface][Xbox][Ybox];
+    noisyReward = Math.floor(25*locationReward/3.2) + Math.floor(Math.random()*sigma);  // add noise
+    currentReward = scaler*noisyReward;                                                 // scale
 }
 
 function displayReward()
 {
     $("input[name=reward]").attr('value', currentReward);
+}
+
+function updateRM()  // based on new information, update reward map according to Bayesian inference algorithm
+{
+    // covert goalXbox & goalYbox into posVector & posMatrix
+    var pos = goalXbox + goalYbox*N;
+    posVector = Vector.Zero(Math.pow(N,d));
+    posVector.elements[pos] = 1;
+    posMatrix = posVector.toDiagonalMatrix();
+    
+    // Bayesian update
+    var q = (posVector.x(currentReward)).add(precision.x(meanRew));
+    precision = posMatrix.x(1/(sigma*sigma)).add(precision);
+    cov = precision.inv();
+    meanRew = cov.x(q);
+    
+    displayRM();
+}
+
+function displayRM()
+{
+    var data = meanRew.elements;  // extract array from vector object
+    rewardMap.clear();
+    rewardMap.dotchart(0, 0, $("#RM").width(), $("#RM").height(), x, y, data, {symbol: "o", max: 20, heat: true});
     
     BelugaMoving = false;  // subject can select a new waypoint
+}
+
+function sendData()  // via AJAX
+{
+    var data = {};
+    data['subject'] = $("input[name=subject]").val();
+    data['block'] = block;
+    data['timing'] = timing;
+    data['surface'] = surface + 4;                     // to realign with surface numbers from hitl_task.js
+    data['trial'] = trialsCompleted;
+    data['waypointX'] = goalXbox;
+    data['waypointY'] = goalYbox;
+    data['reward'] = currentReward;
+    
+     $.ajax({
+        type: "POST",
+        url: "processData",
+        data: data
+    });
 }
 
 function doSend()

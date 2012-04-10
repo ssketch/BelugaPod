@@ -33,15 +33,16 @@ div#Beluga {
   background-size: 100% 100%;
   opacity: 0.6; }
 
-div#chartContainer {
+div#RMContainer {
   width: 400px; }
 
-div#chart {
+div#RM {
   width: 400px;
   height: 400px; }
 
 td {
-  vertical-align: middle; }
+  vertical-align: middle;
+  text-align: center; }
 
 input[type=text] {
   width: 100px;

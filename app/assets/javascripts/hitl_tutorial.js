@@ -1,7 +1,7 @@
 // VARIABLES
 
-var totalTrials = 5;   // total number of training trials
-var trialsCompleted;   // trial counter
+var totalTrials = 5;  // total number of training trials
+var trialsCompleted;  // trial counter
 
 var timing = 7500;                  // 7.5 sec per training trial
 var N = 10;                         // grid size
@@ -19,19 +19,19 @@ reward[9] = [1,1,1,1,1,1,1,1,1,1];
 var sigma = 10;                     // noise intensity for reward
 var currentReward;
 
-var mouseXonGrid;   // current cursor location (relative to upper-left corner of grid)
+var mouseXonGrid;  // current cursor location (relative to upper-left corner of grid)
 var mouseYonGrid;
-var currentXpos;    // current cursor location (centers of grid boxes, relative to upper-left corner of grid)
+var currentXpos;   // current cursor location (centers of grid boxes, relative to upper-left corner of grid)
 var currentYpos;
-var currentXbox;    // grid box that cursor is currently in
+var currentXbox;   // grid box that cursor is currently in
 var currentYbox; 
-var goalXpos;       // position of current waypoint (relative to upper-left corner of grid)
+var goalXpos;      // position of current waypoint (relative to upper-left corner of grid)
 var goalYpos;
-var goalXbox;       // current waypoint (box-wise)
+var goalXbox;      // current waypoint (box-wise)
 var goalYbox;
-var BelugaXpos;     // position of robot in tank-image coordinates (relative to center/origin of tank)
+var BelugaXpos;    // position of robot in tank-image coordinates (relative to center/origin of tank)
 var BelugaYpos; 
-var BelugaXbox;     // grid box that robot is currently in
+var BelugaXbox;    // grid box that robot is currently in
 var BelugaYbox;
 
 var GridStartX = 153;    // x-coordinate of upper-left pixel of grid
@@ -51,7 +51,7 @@ var SendPeriod = 500;      // time between updates (msec)
 
 $(document).ready(function(){
 
-    $('#crosshair').hide(); // hide crosshair and waypoint to start
+    $('#crosshair').hide();  // hide crosshair and waypoint to start
     $('#waypoint').hide();
     
     requestWaypoints();
@@ -141,7 +141,7 @@ function initialize()  // send robot to starting box
     setWaypoint(goalXpos, goalYpos);
     
     calculateReward(goalXbox, goalYbox);
-    setTimeout("displayReward()", timing);         // wait for 'timing' msec (after setting waypoint) to display initial reward
+    setTimeout("displayReward()", timing);  // wait for 'timing' msec (after setting waypoint) to display initial reward
 }
 
 function snapToGrid(X, Y)  // place a crosshair at center of grid box currently occupied by cursor (i.e., 'snap-to' location)
@@ -176,17 +176,18 @@ function doUpdate()  // check task status, set waypoint, display reward, store d
                 $("form#done").submit()
             }
         });
+        return
     }
     
-    goalXbox = currentXbox;    // new waypoint = grid box that cursor is currently in
+    goalXbox = currentXbox;  // new waypoint = grid box that cursor is currently in
     goalYbox = currentYbox;
-    goalXpos = currentXpos;    // set position of new waypoint (relative to upper-left corner of grid)
+    goalXpos = currentXpos;  // set position of new waypoint (relative to upper-left corner of grid)
     goalYpos = currentYpos;
     
     setWaypoint(goalXpos, goalYpos);
     
     calculateReward(goalXbox, goalYbox);
-    setTimeout("displayReward()", timing);         // wait for 'timing' msec (after setting waypoint) to display reward
+    setTimeout("displayReward()", timing);  // wait for 'timing' msec (after setting waypoint) to display reward
 }
 
 function setWaypoint(X, Y)  // position waypoint, both on screen and for Beluga tracking/control

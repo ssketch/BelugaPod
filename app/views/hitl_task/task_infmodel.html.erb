@@ -6,6 +6,7 @@
 <%= content_for :page_js do %>
   <%= javascript_include_tag "hitl_task_infmodel" %>
   <%= javascript_include_tag "zebra_dialog" %>
+  <%= javascript_include_tag "sylvester" %>
   <%= javascript_include_tag "raphael" %>
   <%= javascript_include_tag "g.raphael" %>
   <%= javascript_include_tag "g.dot" %>
@@ -24,6 +25,7 @@
 
 <%= form_tag("/hitl_task/feedback", :id => "done", :method => "post") do %>
   <input type="hidden" name="subject" value='<%= @subject %>' />
+  <input type="hidden" name="surface" value='<%= @surface %>' />
 <% end %>
 
 <body>
@@ -37,12 +39,9 @@
     <form method="post">
       <big><b>REWARD</b> =</big> <input type="text" name="reward" value="" readonly="readonly" />
     </form>
-    <br />
-    <br />
-    <br />
   </div>
 
-  <table class="center" cellspacing="50">
+  <table class="center" cellspacing="75">
     <tr>
       <td class="center">
         <div id="tankContainer">
@@ -55,8 +54,12 @@
       </td>
 
       <td class="center">
-        <div id="chartContainer">
-          <div id="chart"></div>
+        <h3>Reward Map</h3>
+        <font color="#B40404">LARGE</font>: likely greater reward
+        <br />
+        <br />
+        <div id="RMContainer">
+          <div id="RM"></div>
         </div>
       </td>
     </tr>

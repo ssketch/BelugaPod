@@ -8,7 +8,7 @@ BelugaPod::Application.routes.draw do
   
   post "hitl_task/task"
   
-  get "hitl_task/task_infmodel"
+  post "hitl_task/task_infmodel"
   
   post "hitl_task/processData"
   

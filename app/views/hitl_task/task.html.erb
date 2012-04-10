@@ -21,6 +21,7 @@
 
 <%= form_tag("/hitl_task/task_infmodel", :id => "done", :method => "post") do %>
   <input type="hidden" name="subject" value='<%= @subject %>' />
+  <input type="hidden" name="nextSurface" />
 <% end %>
 
 <body>
