@@ -22,11 +22,12 @@ BelugaPod::Application.routes.draw do
   match '/joystick' => 'pages#joystick'
   match '/waypoint' => 'pages#waypoint'
   match '/ipc' => 'pages#ipc'
+  match '/sandbox' => 'pages#sandbox'
 
   resources :kinematics, :only => [:index, :new, :create, :show]
   resources :positions, :only => [:index, :new, :create, :show]
   resources :waypoints, :only => [:index, :new, :create, :show]  
-  
+  resources :params, :only => [:index, :new, :create, :show]
   
   # The priority is based upon order of creation:
   # first created -> highest priority.
