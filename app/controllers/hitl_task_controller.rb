@@ -10,18 +10,21 @@ class HitlTaskController < ApplicationController
 
   def tutorial
     @subject = params[:subject]
-	@waypoint = Waypoint.new(:id => 0, :x => 0, :y => 0, :z => 1.8)
+	@waypoint = Waypoint.new(:id => 0, :x => 0, :y => 0, :z => 1.8)  # 1.8 m = webcam height
+	@param = Param.new(:string => 7500)								 # between fast and slow timings
   end
 
   def task
 	@subject = params[:subject]
 	@waypoint = Waypoint.new(:id => 0, :x => 0, :y => 0, :z => 1.8)
+	@param = Param.new(:string => 0)								 # timing will be set in javascript
   end
   
   def task_infmodel
 	@subject = params[:subject]
 	@surface = params[:nextSurface]
 	@waypoint = Waypoint.new(:id => 0, :x => 0, :y => 0, :z => 1.8)
+	@param = Param.new(:string => 5000)								 # fast timing
   end
 
   def processData

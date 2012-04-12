@@ -220,11 +220,13 @@ function initialize()  // set timing, surface, noise, & scaler, send robot to st
     if (block < 2)  // 1st & 2nd blocks (1 CG & 1 RO, timing picked randomly for each, noisy)
     {
         timing = shuffle(timings)[0];  // random, repick for each block
+        setParamString(timing);        // set timing for Beluga ControlLaw
         surface = surfaces[block];     // surface 1 for 1st block, surface 2 for 2nd block
     }
     else  // 3rd block (fast, RO, noiseless)
     {
         timing = timings[0];      // fast timing
+        setParamString(timing);
         surface = surfacesRO[1];  // next RO surface in array
     }
     sigma = sigmas[block];                                       // 10 for 1st & 2nd block, 0 (noiseless) for 3rd
@@ -284,7 +286,7 @@ function doUpdate()  // check task status, set waypoint, display reward, store d
         else
         {
             $("input[name=nextSurface]").attr('value', surfacesRO[2]);  // store next RO surface for task with inference model
-            $.Zebra_Dialog('The next task is your final task. As described in the instructions, you will be given a continuously updating "reward map" to help with your search. The map will be a 10x10 grid of colored dots. The larger the dot and "warmer" the color, the greater you believe the reward at that location in the grid to be. Click "OK" to proceed.', {
+            $.Zebra_Dialog('The next task is your final task. As described in the instructions, you will be given a continuously updating "reward map" to help with your search. The map will be a 10x10 grid of colored dots. The larger the dot and "warmer" the color, the greater the reward at that location in the grid is likely to be. Click "OK" to proceed.', {
                 keyboard: false,
                 overlay_close: false,
                 overlay_opacity: 0.7,
@@ -307,6 +309,11 @@ function doUpdate()  // check task status, set waypoint, display reward, store d
     setTimeout("displayReward()", timing);         // wait for 'timing' msec (after setting waypoint) to display reward
     
     sendData();
+}
+
+function updateParamString(params)  // used to update timing for task (called elsewhere)
+{
+    $("#param_string").text(params);
 }
 
 function setWaypoint(X, Y)  // position waypoint, both on screen and for Beluga tracking/control

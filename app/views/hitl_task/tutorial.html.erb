@@ -5,6 +5,7 @@
 
 <%= content_for :page_js do %>
   <%= javascript_include_tag "hitl_tutorial" %>
+  <%= javascript_include_tag "common" %>
   <%= javascript_include_tag "zebra_dialog" %>
 <% end %>
 
@@ -17,6 +18,10 @@
   <%= f.hidden_field :x %>
   <%= f.hidden_field :y %>
   <%= f.hidden_field :z %>
+<% end %>
+
+<%= form_for(@param, :remote => true) do |f| %>
+  <%= f.hidden_field :string %>
 <% end %>
 
 <%= form_tag("/hitl_task/task", :id => "done", :method => "post") do %>

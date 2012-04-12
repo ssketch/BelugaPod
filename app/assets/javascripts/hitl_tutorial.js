@@ -3,7 +3,7 @@
 var totalTrials = 5;  // total number of training trials
 var trialsCompleted;  // trial counter
 
-var timing = 7500;                  // 7.5 sec per training trial
+var timing = 7500;                  // between fast and slow timings
 var N = 10;                         // grid size
 var reward = new Array(N);          // training surface (just noise)
 reward[0] = [1,1,1,1,1,1,1,1,1,1];

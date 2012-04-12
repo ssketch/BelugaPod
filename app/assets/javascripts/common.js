@@ -10,7 +10,7 @@
  */
 function requestParamString()
 {
-    $.ajax({ url: 'params', dataType: 'script' });
+    $.ajax({ url: '/params', dataType: 'script' });
 }
 
 /* Function to set the param string on the server.  The response script
@@ -24,7 +24,7 @@ function setParamString(params)
 {
     $.ajax({
         type: "POST",
-        url: "params",
+        url: "/params",
         data: "param[string]=" + params,
         dataType: "script"
     });

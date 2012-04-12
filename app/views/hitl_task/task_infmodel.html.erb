@@ -5,6 +5,7 @@
 
 <%= content_for :page_js do %>
   <%= javascript_include_tag "hitl_task_infmodel" %>
+  <%= javascript_include_tag "common" %>
   <%= javascript_include_tag "zebra_dialog" %>
   <%= javascript_include_tag "sylvester" %>
   <%= javascript_include_tag "raphael" %>
@@ -21,6 +22,10 @@
   <%= f.hidden_field :x %>
   <%= f.hidden_field :y %>
   <%= f.hidden_field :z %>
+<% end %>
+
+<%= form_for(@param, :remote => true) do |f| %>
+  <%= f.hidden_field :string %>
 <% end %>
 
 <%= form_tag("/hitl_task/feedback", :id => "done", :method => "post") do %>
