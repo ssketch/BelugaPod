@@ -334,7 +334,7 @@ function displayRM()
 {
     var data = meanRew.elements;  // extract array from vector object
     rewardMap.clear();
-    rewardMap.dotchart(0, 0, $("#RM").width(), $("#RM").height(), x, y, data, {symbol: "o", max: 20, heat: true});
+    rewardMap.dotchart(0, 0, $("#RM").width(), $("#RM").height(), x, y, data, {symbol: "o", max: 25, heat: true});
     
     BelugaMoving = false;  // subject can select a new waypoint
 }
