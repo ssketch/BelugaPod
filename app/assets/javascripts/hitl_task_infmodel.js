@@ -4,7 +4,7 @@ var totalTrials = 90;  // total number of trials
 var trialsCompleted;   // trial counter
 
 var block = 3;                           // 4th and final block
-var timing = 5000;                       // fast timing
+var timing = 10000;                      // fast timing
 var surface;                             // will be pulled in from HTML
 var d = 2;                               // dimensionality of grid
 var N = 10;                              // grid size

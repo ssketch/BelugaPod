@@ -4,7 +4,7 @@ var totalTrials = 90;  // total number of trials
 var trialsCompleted;   // trial counter
 
 var block = 0;
-var timings = [5000, 10000];                            // 5 & 10 seconds (temporarily)
+var timings = [10000, 15000];                           // 10 & 15 seconds
 var timing;                                             // selected time per trial (i.e., for robot to travel between waypoints) for current block
 var surfacesCG = shuffle([0,1,2,3]);                    // CG rotated 0, 90, 180, 270 degrees, randomized
 var surfacesRO = shuffle([4,5,6,7]);                    // RO rotated 0, 90, 180, 270 degrees, randomized
