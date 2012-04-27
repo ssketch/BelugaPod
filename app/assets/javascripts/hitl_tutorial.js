@@ -3,7 +3,7 @@
 var totalTrials = 5;  // total number of training trials
 var trialsCompleted;  // trial counter
 
-var timing = 7500;                  // between fast and slow timings
+var timing = 12500;                 // between fast and slow timings
 var N = 10;                         // grid size
 var reward = new Array(N);          // training surface (just noise)
 reward[0] = [1,1,1,1,1,1,1,1,1,1];
@@ -82,7 +82,7 @@ $(document).ready(function(){
     
     if (HaveCounter == undefined)
     {
-        window.setInterval(doSend(), SendPeriod);
+        window.setInterval(doSend, SendPeriod);
         HaveCounter = true;
     }
 
@@ -107,12 +107,16 @@ function requestPositions()  // via AJAX
     });
 }
 
-function setPosition(id, X, Y, Z)  // updates Beluga position (called elsewhere, so id and Z are kept as arguments)
+function setPosition(id, X, Y, Z)  // updates Beluga position (called elsewhere, so Z is kept as an argument)
 {
+    if (id != 0)  // only track robot with id = 0
+    {
+        return;
+    }
     BelugaXpos = world2tank(X);
     BelugaYpos = world2tank(Y);
-    BelugaXbox = Math.floor((BelugaXpos + 0.5*$("#tank").width() - GridStartX)/GridBoxWidth);     // not always 0-9
-    BelugaYbox = Math.floor((-BelugaYpos + 0.5*$("#tank").height() - GridStartY)/GridBoxHeight);
+    BelugaXbox = Math.floor((BelugaXpos + 0.5*$("#tank").width() - GridStartX)/GridBoxWidth);    // not always 0-9
+    BelugaYbox = Math.floor((BelugaYpos + 0.5*$("#tank").height() - GridStartY)/GridBoxHeight);
     var offX = BelugaXpos - 1;
     var offY = BelugaYpos - 1;
     var off = offX + " " + offY;
@@ -141,7 +145,7 @@ function initialize()  // send robot to starting box
     setWaypoint(goalXpos, goalYpos);
     
     calculateReward(goalXbox, goalYbox);
-    setTimeout("displayReward()", timing);  // wait for 'timing' msec (after setting waypoint) to display initial reward
+    setTimeout(displayReward, timing);    // wait for 'timing' msec (after setting waypoint) to display initial reward
 }
 
 function snapToGrid(X, Y)  // place a crosshair at center of grid box currently occupied by cursor (i.e., 'snap-to' location)
@@ -187,7 +191,7 @@ function doUpdate()  // check task status, set waypoint, display reward, store d
     setWaypoint(goalXpos, goalYpos);
     
     calculateReward(goalXbox, goalYbox);
-    setTimeout("displayReward()", timing);  // wait for 'timing' msec (after setting waypoint) to display reward
+    setTimeout(displayReward, timing);    // wait for 'timing' msec (after setting waypoint) to display reward
 }
 
 function setWaypoint(X, Y)  // position waypoint, both on screen and for Beluga tracking/control
@@ -206,7 +210,7 @@ function setWaypoint(X, Y)  // position waypoint, both on screen and for Beluga 
         
     // for tracking/control
     var waypointX = tank2world(X + GridStartX - 0.5*$("#tank").width());
-    var waypointY = tank2world(-(Y + GridStartY - 0.5*$("#tank").height()));
+    var waypointY = tank2world(Y + GridStartY - 0.5*$("#tank").height());
     $("#waypoint_x").val(waypointX);
     $("#waypoint_y").val(waypointY);
     

@@ -1,4 +1,9 @@
 class HitlTaskController < ApplicationController
+  before_filter :ipc_info
+  
+  def ipc_info
+    @ipc_up = BelugaSocket.okay?
+  end
   
   def consent
     @subject = Time.new().to_i.to_s + "_" + "%04d" % rand(1000)
@@ -7,7 +12,7 @@ class HitlTaskController < ApplicationController
   def instructions
     @subject = params[:subject]
   end
-
+  
   def tutorial
     @subject = params[:subject]
 	@waypoint = Waypoint.new(:id => 0, :x => 0, :y => 0, :z => 1.8)  # 1.8 m = webcam height
