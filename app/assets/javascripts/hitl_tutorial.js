@@ -30,9 +30,7 @@ var goalYpos;
 var goalXbox;      // current waypoint (box-wise)
 var goalYbox;
 var BelugaXpos;    // position of robot in tank-image coordinates (relative to center/origin of tank)
-var BelugaYpos; 
-var BelugaXbox;    // grid box that robot is currently in
-var BelugaYbox;
+var BelugaYpos;
 
 var GridStartX = 153;    // x-coordinate of upper-left pixel of grid
 var GridStartY = 143;    // y-coordinate of upper-left pixel of grid
@@ -115,8 +113,6 @@ function setPosition(id, X, Y, Z)  // updates Beluga position (called elsewhere,
     }
     BelugaXpos = world2tank(X);
     BelugaYpos = world2tank(Y);
-    BelugaXbox = Math.floor((BelugaXpos + 0.5*$("#tank").width() - GridStartX)/GridBoxWidth);    // not always 0-9
-    BelugaYbox = Math.floor((BelugaYpos + 0.5*$("#tank").height() - GridStartY)/GridBoxHeight);
     var offX = BelugaXpos - 1;
     var offY = BelugaYpos - 1;
     var off = offX + " " + offY;
@@ -268,14 +264,4 @@ function page2gridX(pos)  // webpage (absolute) to grid (relative to upper-left 
 function page2gridY(pos)  // webpage (absolute) to grid (relative to upper-left corner) y-coordinate - for object positioning
 {
     return pos - $("#tank").position().top - GridStartY;
-}
-
-function grid2pageX(pos)  // grid (relative to upper-left corner) to webpage (absolute) x-coordinate - for object positioning
-{
-    return pos + $("#tank").position().left + GridStartX;
-}
-
-function grid2pageY(pos)  // grid (relative to upper-left corner) to webpage (absolute) y-coordinate - for object positioning
-{
-    return pos + $("#tank").position().top + GridStartY;
 }
