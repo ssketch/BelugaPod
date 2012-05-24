@@ -112,7 +112,7 @@ function setPosition(id, X, Y, Z)  // updates Beluga position (called elsewhere,
         return;
     }
     BelugaXpos = world2tank(X);
-    BelugaYpos = world2tank(Y);
+    BelugaYpos = -world2tank(Y);
     var offX = BelugaXpos - 1;
     var offY = BelugaYpos - 1;
     var off = offX + " " + offY;
@@ -206,7 +206,7 @@ function setWaypoint(X, Y)  // position waypoint, both on screen and for Beluga 
         
     // for tracking/control
     var waypointX = tank2world(X + GridStartX - 0.5*$("#tank").width());
-    var waypointY = tank2world(Y + GridStartY - 0.5*$("#tank").height());
+    var waypointY = -tank2world(Y + GridStartY - 0.5*$("#tank").height());
     $("#waypoint_x").val(waypointX);
     $("#waypoint_y").val(waypointY);
     
